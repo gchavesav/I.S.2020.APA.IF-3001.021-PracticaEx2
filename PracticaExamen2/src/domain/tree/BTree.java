@@ -318,7 +318,33 @@ public class BTree implements Tree {
      * @throws domain.tree.TreeException 
      */
     public BTree btNodeSum(BTree t1, BTree t2) throws TreeException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(isEmpty()){
+            throw new TreeException("Binary Tree is empty");
+        }
+        BTree tree = new BTree();
+        tree.root = btNodeSum(t1.root, t2.root, "root");
+        return tree;
+    }
+    
+    public BTreeNode btNodeSum(BTreeNode node1, BTreeNode node2, String label){
+        if(node1==null){
+            if(node2==null) return null;
+            else return new BTreeNode(node2.data, 
+                    btNodeSum(null, node2.left, label+"/left"), 
+                    btNodeSum(null, node2.right, label+"right"), 
+                    label);
+        }else //entra si node1!=null
+            if(node2==null){
+                return new BTreeNode(node1.data, 
+                    btNodeSum(node1.left, null, label+"/left"),
+                    btNodeSum(node1.right, null, label+"/right"),
+                    label);
+            }else{
+                return new BTreeNode((int)node1.data+(int)node2.data,
+                        btNodeSum(node1.left, node2.left, label+"/left"),
+                        btNodeSum(node1.right, node2.right, label+"/right"),
+                        label);
+            }
     }
 
     /**

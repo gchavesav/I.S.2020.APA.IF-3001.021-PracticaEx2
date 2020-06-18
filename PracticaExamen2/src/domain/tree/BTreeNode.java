@@ -22,12 +22,20 @@ public class BTreeNode {
         this.left = this.right = null;
     }
     
-    //Contructor sobrecargado #2
+    //Contructor #2
     public BTreeNode(Object data, String label, int level){
         this.data = data;
         this.label = label;
         this.level = level;
         this.left = this.right = null;
+    }
+
+    //Constructor #3
+    public BTreeNode(Object data, BTreeNode left, BTreeNode right, String label) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
+        this.label = label;
     }
     
     public Object getData() {
