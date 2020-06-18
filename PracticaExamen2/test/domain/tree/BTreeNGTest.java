@@ -31,12 +31,12 @@ public class BTreeNGTest {
                      +t2.toString());
 
             BTree t3 = t1.btNodeSum(t1, t2);
-            System.out.println("BTREE NODE SUM..."
+            System.out.println("BTREE NODE SUM T1 AND T2..."
                      +t3.toString());
 
-            System.out.println("\nBTREE-1 IS ABM?"
+            System.out.println("\nBTREE-1 IS ABM? "
                      +t1.isABM());
-            System.out.println("\nBTREE-2 IS ABM?"
+            System.out.println("\nBTREE-2 IS ABM? "
                      +t2.isABM());
             
             BTree t4 = new BTree();
@@ -44,21 +44,25 @@ public class BTreeNGTest {
             t4.add(19); t4.add(23); t4.add(30);
             System.out.println("BTREE-4..."
                      +t4.toString());
+            System.out.println("\nBTREE-4 IS ABM? "
+                     +t4.isABM());
+//            
+//            BTree t5 = t1.joinABM(t1, t4);
+//            System.out.println("\nJOIN ABM T1 AND T4..."
+//                    +t5.toString());
             
-            BTree t5 = t1.joinABM(t1, t4);
-            System.out.println("\nJOIN ABM T1 AND T4..."
-                    +t5.toString());
-            
+            System.out.println("BTREE-1..."
+                     +t1.toString());
             System.out.println("BTREE-1 NODE SUM..."
                     +t1.btNodeSum());
             System.out.println("BTREE-2 NODE SUM..."
                     +t2.btNodeSum());
             System.out.println("BTREE-3 NODE SUM..."
                     +t3.btNodeSum());
-            System.out.println("BTREE-4 NODE SUM..."
-                    +t4.btNodeSum());
-            System.out.println("BTREE-5 NODE SUM..."
-                    +t5.btNodeSum());
+//            System.out.println("BTREE-4 NODE SUM..."
+//                    +t4.btNodeSum());
+//            System.out.println("BTREE-5 NODE SUM..."
+//                    +t5.btNodeSum());
               
         }catch(TreeException ex){
             System.out.println(ex.getMessage());

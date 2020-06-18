@@ -347,15 +347,37 @@ public class BTree implements Tree {
             }
     }
 
-    /**
-     * boolean isABM() 
-     * devuelve true si el árbol binario es un árbol ABM 
-     * @return 
-     * @throws domain.tree.TreeException 
-     */
     public boolean isABM() throws TreeException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isEmpty()) {
+            throw new TreeException("Binary Tree is empty");
+        }
+        return isABM(root, (Integer) root.data);
     }
+
+    /**
+     * Recorre cada nodo y verifica que sus hijos sean igual o mayores que el valor
+     * que contiene el nodo seleccionado.
+     * 
+     * @author Jeison Araya Mena | B90514
+     * 
+     * @param node actual.
+     * @param value valor del nodo padre.
+     * 
+     * @return {@code true} es igual o mayores a su nodo padre,{@code false} es menor a su nodo padre.
+     */
+    private boolean isABM(BTreeNode node, Integer value) {
+        // Caso base -> Es una hoja   
+        if (node == null) {
+            return true;
+        }
+        // Caso base -> Si lo que tiene este nodo es menor a value, no es válido.
+        if((Integer) node.data < value)
+            return false;
+        // Caso recursivo
+        // Recorrer todos los hijos de este nodo.
+        return isABM(node.left, (Integer) node.data) && isABM(node.right, (Integer) node.data);
+    }
+
 
     /**
      * BTree joinABM(BTree t1, BTree t4)
@@ -376,11 +398,30 @@ public class BTree implements Tree {
      * binario simple de numeros enteros en el que cada uno de sus nodos 
      * contiene la suma del elemento del nodo, junto con la suma de todos los 
      * elementos de sus nodos descendientes.
+     * @author Milena Rojas
      * @return 
      * @throws domain.tree.TreeException 
      */
-    public BTree btNodeSum() throws TreeException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   public BTree btNodeSum() throws TreeException {
+        if (isEmpty()) {
+            throw new TreeException("Binary Tree is empty");
+        }
+        BTree tree = new BTree();
+        tree.root = btNodeSum(root);
+        return tree;
+    }
+
+    private BTreeNode btNodeSum(BTreeNode nodo) {
+        if (nodo.left == null && nodo.right == null) {
+            return nodo;
+        } else if (nodo.left != null && nodo.right != null) {
+            nodo.data = (int) nodo.data + (int) btNodeSum(nodo.left).data + (int) btNodeSum(nodo.right).data;
+        } else if (nodo.left != null && nodo.right == null) {
+            nodo.data = (int) nodo.data + (int) btNodeSum(nodo.left).data;
+        } else if (nodo.left == null && nodo.right != null) {
+            nodo.data = (int) nodo.data + (int) btNodeSum(nodo.right).data;
+        }
+        return nodo;
     }
     
 }
