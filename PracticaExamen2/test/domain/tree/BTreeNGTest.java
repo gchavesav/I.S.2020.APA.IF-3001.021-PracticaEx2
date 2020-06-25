@@ -46,10 +46,10 @@ public class BTreeNGTest {
                      +t4.toString());
             System.out.println("\nBTREE-4 IS ABM? "
                      +t4.isABM());
-//            
-//            BTree t5 = t1.joinABM(t1, t4);
-//            System.out.println("\nJOIN ABM T1 AND T4..."
-//                    +t5.toString());
+            
+            BTree t5 = t1.joinABM(t1, t4);
+            System.out.println("\nJOIN ABM T1 AND T4..."
+                    +t5.toString());
             
             System.out.println("BTREE-1..."
                      +t1.toString());

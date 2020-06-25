@@ -17,7 +17,10 @@ public class BTree implements Tree {
     public BTree(){
         this.root = null;
     }
-         
+     
+    public BTreeNode getRoot(){
+        return root;
+    }
     
     @Override
     public int size() throws TreeException {
@@ -382,14 +385,50 @@ public class BTree implements Tree {
     /**
      * BTree joinABM(BTree t1, BTree t4)
      * devuelve un nuevo arbol ABM como resultado de la unión de los árboles 
-     * binarios ABM "a" y "b". Como parte de la solución deberá comprobar que 
+     * binarios ABM "a" y "b".Como parte de la solución deberá comprobar que 
      * los árboles binarios recibidos como parámetros también sean ABM.
-     * @param t1
-     * @param t4
+     * @author Marian Murillo
+     * @param a
+     * @param b
      * @return 
+     * @throws domain.tree.TreeException 
      */
-    public BTree joinABM(BTree t1, BTree t4) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public BTree joinABM(BTree a, BTree b) throws TreeException {
+        if(a.isEmpty()||b.isEmpty()){
+            throw new TreeException("Binary Tree [a] or [b] is empty");
+        }
+        if(!a.isABM()||!b.isABM()){
+            throw new TreeException("Binary tree [a] or [b] is not ABM");
+        }
+        BTree tree = new BTree();
+        tree.root = joinABM(a.getRoot(), b.getRoot(), "root");
+        return tree;
+    }
+    
+    private BTreeNode joinABM(BTreeNode node1, BTreeNode node2, String label) { 
+        // Caso ambos arboles vacios
+        if( node1==null && node2==null )
+            return null;
+        // Caso arbol izquierdo vacio
+        if( node1==null )
+            return new BTreeNode(node2.data,
+                    joinABM(node2.left, null, label+"/left"),
+                    joinABM(node2.right, null, label+"/right"),label);
+        // Caso arbol derecho vacio
+        if( node2==null )
+            return new BTreeNode(node1.data,
+                    joinABM(node1.left, null, label+"/left"), 
+                    joinABM(node1.right, null, label+"/right"), label);
+        // Caso general
+        if( (int)node1.data <= (int)node2.data )
+        return new BTreeNode(node1.data,
+                joinABM(node1.left, node1.right, label+"/left"),
+                joinABM(node2, null, label+"/right"), label);
+        else
+        return new BTreeNode(node2.data,
+                joinABM(node1,null, label+"/left"),
+                joinABM(node2.left,node2.right, label+"/right"), label); 
+
     }
 
     /**

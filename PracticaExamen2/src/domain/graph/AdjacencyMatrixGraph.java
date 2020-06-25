@@ -286,26 +286,62 @@ public class AdjacencyMatrixGraph implements Graph {
      */
     
     /**
-     * String getShortestDistance()
      * Devuelve un string con la información de la distancia mas corta y las 
-     * ciudades que se conectan con esa distancia. El metodo se debe implementar 
+     * ciudades que se conectan con esa distancia.El metodo se debe implementar 
      * para grafo matriz de adyacencia, grafo lista de adyacencia, grafo lista 
-     * enlazada.
-     * Ejemplo de salida por consola: Cities: H-A, distance: 10kms
-     * @return 
+     * enlazada. Ejemplo de salida por consola: Cities: H-A, distance: 10kms
+     * @return
+     * @throws domain.graph.GraphException 
      */
-    public String getShortestDistance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getShortestDistance() throws GraphException {
+        if(isEmpty()){
+            throw new GraphException("Adjacency Matrix Graph is Empty");
+        }
+        int shortestD = 100000000;
+        String city1 = "";
+        String city2 = "";
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                //se valida q tenga arista y peso
+                if(adjacencyMatrix[i][j]!=(Object)0
+                   &&adjacencyMatrix[i][j]!=(Object)1){
+                    if(shortestD>(int)adjacencyMatrix[i][j]){
+                        shortestD = (int)adjacencyMatrix[i][j];
+                        city1 = vertexList[i].data.toString();
+                        city2 = vertexList[j].data.toString();
+                    }
+                }
+            }
+        }
+        return "Cities: "+city1+"-"+city2+", distance: "+shortestD+"kms";
     }
+    
+   
 
     /**
      * int totalKms()
      * devuelve un número entero que representa el total de kilómetros incluidos 
      * en el grafo del Sistema de Abastecimiento de Combustible
+     * @author Ian Ondy
      * @return 
+     * @throws domain.graph.GraphException 
+     * @throws domain.list.ListException 
      */
-    public int totalKms() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+     public int totalKms() throws GraphException, ListException {
+        int totalR = 0;
+        if(vertexList.length <= 0) 
+            throw new GraphException("Graph is empty");
+        for (int i = 0; i < count; i++) 
+            for (int j = 0; j < count; j++) {
+            if(adjacencyMatrix.length <= 0) 
+                throw new GraphException("NO EDGES OR WEIGHTS FOUND");
+            else{ 
+                totalR+= (int) adjacencyMatrix[i][j];
+            }//end else 
+        }//end for
+        return totalR/2;
+    }//end totalKMS()
+
+    
     
 }

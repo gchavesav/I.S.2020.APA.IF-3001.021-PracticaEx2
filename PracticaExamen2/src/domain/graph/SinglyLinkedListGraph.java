@@ -299,23 +299,81 @@ public class SinglyLinkedListGraph implements Graph {
     /**
      * String getShortestDistance()
      * Devuelve un string con la información de la distancia mas corta y las 
-     * ciudades que se conectan con esa distancia. El metodo se debe implementar 
+     * ciudades que se conectan con esa distancia.El metodo se debe implementar 
      * para grafo matriz de adyacencia, grafo lista de adyacencia, grafo lista 
-     * enlazada.
-     * Ejemplo de salida por consola: Cities: H-A, distance: 10kms
-     * @return 
+     * enlazada.Ejemplo de salida por consola: Cities: H-A, distance: 10kms
+     * @author Rita Ortega
+     * @return
+     * @throws domain.graph.GraphException 
+     * @throws domain.list.ListException 
      */
-    public String getShortestDistance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   public String getShortestDistance() throws GraphException, ListException {
+        if (isEmpty()) {
+            throw new GraphException("SinglyLinkedList Graph is Empty");
+        }
+        Vertex vertex1 = (Vertex)vertexList.getNode(1).data;
+        String city1 = "";
+        String city2 = "";
+        int sd1 = getShortestWeight(vertex1.edgesList);
+        for (int i = 2; i <= vertexList.size(); i++) {
+           vertex1=(Vertex)vertexList.getNode(i).data;
+            int sd2 = getShortestWeight(vertex1.edgesList);
+            if (sd1 > sd2) {
+                sd1 = sd2;
+                city1 = vertex1.data.toString();
+                city2 = getShortestEdge(vertex1.edgesList);
+            }
+        }
+        return "Cities: "+city1+"-"+city2+", distance: "+sd1+"kms";
     }
 
+    private int getShortestWeight(SinglyLinkedList list) throws ListException {
+        EdgeWeight e = (EdgeWeight) list.getNode(1).data;
+        int a =Integer.parseInt(e.getWeight().toString());
+        for (int i = 2; i <= list.size(); i++) {
+            EdgeWeight w=(EdgeWeight) list.getNode(i).data;
+            int p=Integer.parseInt(w.getWeight().toString());
+            if(p<a);
+            a=p;  
+        }
+        return a;
+    }
+    
+    private String getShortestEdge(SinglyLinkedList list) throws ListException {
+        EdgeWeight e = (EdgeWeight) list.getNode(1).data;
+        int a =Integer.parseInt(e.getWeight().toString());
+        String s = "";
+        for (int i = 2; i <= list.size(); i++) {
+            EdgeWeight w=(EdgeWeight) list.getNode(i).data;
+            int p=Integer.parseInt(w.getWeight().toString());
+            if(p<a){
+                a=p;
+                s = w.getEdge().toString();
+            }
+        }
+        return s;
+    }
+
+
     /**
-     * int totalKms()
      * devuelve un número entero que representa el total de kilómetros incluidos 
      * en el grafo del Sistema de Abastecimiento de Combustible
+     * @author Jenipher Mata
      * @return 
+     * @throws domain.list.ListException 
      */
-    public int totalKms() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int totalKms() throws ListException {
+        int kms = 0;
+        for (int i = 1; i <= vertexList.size(); i++) {
+            Vertex vertex = (Vertex) vertexList.getNode(i).data;
+            SinglyLinkedList vertexEdges = vertex.edgesList;
+            for (int j = 1; j <= vertexEdges.size(); j++) {
+                EdgeWeight e = (EdgeWeight) vertexEdges.getNode(j).data;
+                int a = Integer.parseInt(e.getWeight().toString());
+                kms += a;
+            }
+        }
+        return kms/2;
     }
+
 }

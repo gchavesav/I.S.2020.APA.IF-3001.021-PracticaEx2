@@ -6,6 +6,7 @@
 package domain.graph;
 
 import domain.list.ListException;
+import domain.list.SinglyLinkedList;
 import domain.queue.LinkedQueue;
 import domain.queue.QueueException;
 import domain.stack.LinkedStack;
@@ -293,26 +294,94 @@ public class AdjacencyListGraph implements Graph {
      */
     
     /**
-     * String getShortestDistance()
      * Devuelve un string con la información de la distancia mas corta y las 
-     * ciudades que se conectan con esa distancia. El metodo se debe implementar 
+     * ciudades que se conectan con esa distancia.El metodo se debe implementar 
      * para grafo matriz de adyacencia, grafo lista de adyacencia, grafo lista 
-     * enlazada.
-     * Ejemplo de salida por consola: Cities: H-A, distance: 10kms
-     * @return 
+     * enlazada.Ejemplo de salida por consola: Cities: H-A, distance: 10kms
+     * @author Rita Ortega
+     * @return
+     * @throws domain.graph.GraphException 
+     * @throws domain.list.ListException 
      */
-    public String getShortestDistance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     public String getShortestDistance() throws GraphException, ListException {
+        if (isEmpty()) {
+            throw new GraphException("Adjacency List Graph is Empty");
+        }
+        Vertex vertex = vertexList[0];
+        String city1 = "";
+        String city2 = "";
+        int sd1 = getShortestWeight(vertex.edgesList);
+        for (int i = 1; i < count; i++) {
+            vertex = vertexList[i];
+            int sd2 = getShortestWeight(vertex.edgesList);
+            if (sd1 > sd2) {
+                sd1 = sd2;
+                city1 = vertex.data.toString();
+                city2 = getShortestEdge(vertex.edgesList);
+            }
+        }
+        return "Cities: "+city1+"-"+city2+", distance: "+sd1+"kms";
     }
+     
+    private int getShortestWeight(SinglyLinkedList list) throws ListException {
+        EdgeWeight b = (EdgeWeight) list.getNode(1).data;
+        int a = Integer.parseInt(b.getWeight().toString());
+        for (int i = 2; i < list.size(); i++) {
+            EdgeWeight w = (EdgeWeight) list.getNode(i).data;
+            int p = Integer.parseInt(w.getWeight().toString());
+            if (p < a)
+                a = p;
+        }
+        return a;
+    }
+    
+    private String getShortestEdge(SinglyLinkedList list) throws ListException {
+        EdgeWeight b = (EdgeWeight) list.getNode(1).data;
+        int a = Integer.parseInt(b.getWeight().toString());
+        String s = "";
+        for (int i = 2; i < list.size(); i++) {
+            EdgeWeight w = (EdgeWeight) list.getNode(i).data;
+            int p = Integer.parseInt(w.getWeight().toString());
+            if (p < a){
+                a = p;
+                s = w.getEdge().toString();
+            }
+        }
+        return s;
+    }
+
 
     /**
      * int totalKms()
      * devuelve un número entero que representa el total de kilómetros incluidos 
      * en el grafo del Sistema de Abastecimiento de Combustible
+     * @author Ian Ondy
      * @return 
+     * @throws domain.graph.GraphException 
+     * @throws domain.list.ListException 
      */
-    public int totalKms() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int totalKms() throws GraphException, ListException {
+        int totalR = 0;
+        if(vertexList.length <= 0) throw new GraphException("Graph is empty");
+        for (int i = 0; i < count; i++) {
+            if(vertexList[i].edgesList.isEmpty()) 
+                throw new GraphException("NO EDGES OR WEIGHTS FOUND");
+            else{
+                totalR += getTotalW(vertexList[i].edgesList);
+            }//end else
+            
+        }//end for        
+        return totalR/2;
+    }//end totalKMS
+    
+    //Se separa en este método para no perder el dato del recorrido, pues sino daría NullPointerException
+    private int getTotalW(SinglyLinkedList list) throws ListException{ 
+        int total=0;
+        for (int i = 1; i <= list.size(); i++) {
+              EdgeWeight ew = (EdgeWeight)list.getNode(i).data;
+              total+=(int)ew.getWeight();
+        }
+        return total;
     }
-
+    
 }
